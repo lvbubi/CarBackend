@@ -1,6 +1,7 @@
 package hu.bbb.carbackend.controller;
 
 import hu.bbb.carbackend.service.CarService;
+import org.jobrunr.jobs.JobId;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +30,9 @@ public class HelloController {
 
         });*/
 
-        jobScheduler.enqueue(() -> carService.executeCarDataflow());
+        JobId jobId = jobScheduler.enqueue(() -> carService.executeCarDataflow());
 
         System.out.println("finished");
-        return "yes";
+        return jobId.asUUID().toString();
     }
 }
